@@ -1,0 +1,57 @@
+open 3 terminal windows
+
+
+window 1: Request resources and start jupyter notebook
+ssh rh183@o2.hms.harvard.edu
+check resources request and environment: vim jupyter_launcher.sh
+sbatch jupyter_launcher.sh
+
+
+window 2: Check resources
+watch -n 0.1 squeue -u rh183 --Format=jobid,name,partition,state,timeused,starttime,timelimit,reasonlist,minmemory,mincpus
+
+or check pending job requests
+watch -n 0.1 sprio -l -u rh183
+
+or check recent usage:
+O2sacct
+
+
+window 3: Connect to jupyter notebook
+conda activate jupyter_connector
+. o2
+
+
+
+To adjust resource request:
+ssh rh183@o2.hms.harvard.edu
+vim jupyter_launcher.sh
+(don't use the jupyter_launcher.sh within the github repo folder)
+
+
+To cancel all jobs:
+scancel -u rh183
+
+To check fairshare:
+sshare -u rh183 -U
+
+To check availability of resources for a node:
+watch -n 0.1 sinfo  --Format=nodehost,partition,available,memory,statelong,gres:20 -p gpu,gpu_quad,gpu_requeue
+
+To reserve a small interactive node (for installing packages):
+srun --pty -p interactive -t 0-00:30:00 --mem=8G /bin/bash
+
+To transfer data between the sabatini server ("MICROSCOPE") to your home folder:
+ssh rh183@transfer.rc.hms.harvard.edu
+cd /n/files/Neurobio/MICROSCOPE/Rich
+
+To use nautilus GUI to view file transfers:
+nautilus sftp://rh183@transfer.rc.hms.harvard.edu
+
+To install a new environment:
+- use the jupyter_launcher.yml file in the repo to make a new env. You may need to change the 'name' to the new name
+- pip install matplotlib numpy scipy scikit-learn scikit-image tqdm 
+
+To use a different environment:
+- specify it in the jupyter_launcher.sh file
+
