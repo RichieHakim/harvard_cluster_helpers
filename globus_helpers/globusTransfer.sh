@@ -9,17 +9,13 @@
 ## globus endpoint search 'HMS-RC-Endpoint' and globus endpoint search 'Harvard FAS RC Holyoke'
 
 
-# Check for the correct number of arguments
-if [ "$#" -ne 4 ]; then
-    echo "Usage: $0 name_from path_from name_to path_to"
-    exit 1
-fi
-
 # Process inputs
 name_from=$1
 path_from=$2
 name_to=$3
 path_to=$4
+## All other input args are appended to the globus transfer command
+shift 4
 
 # List endpoints
 declare -A endpoints=(
@@ -42,6 +38,6 @@ fi
 
 # Perform the Globus transfer
 echo ""
-echo "globus transfer $ep_from:$path_from $ep_to:$path_to --recursive --label '$name_from to $name_to'"
+echo "globus transfer $ep_from:$path_from $ep_to:$path_to --label '$name_from to $name_to' $@"
 # Replace echo with actual command call when ready
-globus transfer $ep_from:$path_from $ep_to:$path_to --recursive --label "$name_from to $name_to"
+globus transfer $ep_from:$path_from $ep_to:$path_to --label "$name_from to $name_to" $@
