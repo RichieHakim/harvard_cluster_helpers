@@ -34,6 +34,7 @@ def print(*args, **kwargs):
 ## Properties to get from squeue
 properties = {
     'job_id': 'JobId',
+    'name': 'Name',
     'state': 'State',
     'submit_time': 'SubmitTime',
     'partition': 'Partition',
@@ -60,7 +61,7 @@ def parse_args():
         "-c",
         "--constraint",
         type=str, 
-        choices=['nodes', 'cpus', 'memory', 'time_left', 'jobs'],
+        choices=['nodes', 'cpus', 'memory', 'time_left', 'jobs', 'fairshare',],
         default='nodes',
         help="Constraint to manage jobs by. Default: 'nodes'.",
     )
@@ -222,13 +223,15 @@ def manage_jobs(
             The username for which to manage jobs.
         constraint (str):
             The constraint to manage jobs by. Jobs will be held if the sum of
-            the constraint on running jobs exceeds the value.\n
+            the constraint on running jobs exceeds the value. For 'fairshare',
+            the user's fairshare score will be used as the constraint.\n
             Options:\n
                 * 'nodes': Number of nodes.\n
                 * 'cpus': Number of CPUs.\n
                 * 'memory': Total memory.\n
                 * 'time_left': Total time left.\n
                 * 'jobs': Total number of running jobs.\n
+                * 'fairshare': Fairshare score for user.\n
         value_max (int):
             The maximum value for the constrained resource on running jobs.
         order_jobs_by (str):
@@ -274,7 +277,12 @@ def manage_jobs(
     print(f"Jobs sorted by {order_jobs_by}.") if verbose > 2 else None
     
     ## Get constrained resource value
-    value_constrained = sum(jobs_sorted_running[constraint])
+    if constraint == 'fairshare':
+        ## Get fairshare for user
+        fairshare = float(subprocess.check_output(["sshare", "-u", username, "-U"]).decode().strip().split('\n')[-1].split()[-1])
+        value_constrained = fairshare
+    else:
+        value_constrained = sum(jobs_sorted_running[constraint])
     print(f"Value constrained calculated: {value_constrained}") if verbose > 2 else None
     
     if value_constrained >= value_max:
