@@ -61,7 +61,7 @@ def parse_args():
     )
     parser.add_argument(
         "-o",
-        "--order-by", 
+        "--order_by", 
         type=str, 
         choices=list(properties.keys()),
         default="submit_time",
