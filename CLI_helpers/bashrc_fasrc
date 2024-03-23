@@ -1,0 +1,17 @@
+module load Mambaforge/23.3.1-fasrc01
+
+# .bashrc
+alias holylabs="cd /n/holylabs/LABS/bsabatini_lab/Users/rhakim"
+alias scratch="cd /n/holyscratch01/bsabatini_lab/Users/rhakim"
+
+alias sq="squeue -a -u rhakim"
+alias interactive_cpu="salloc -p shared --mem=2G -c 2 -N 1 -t 0-02:00:00"
+alias interactive_gpu="salloc -p kempner,kempner_requeue --mem=8G --gres=gpu:1 -c 2 -N -t 0-02:00:00"
+alias njobs="squeue -u rhakim | wc -l"
+alias blame="sshare --account=kempner_bsabatini_lab -a"
+alias myjobs="watch -n 0.1 squeue -u rhakim --Format=JobId,State,Partition,SubmitTime,TimeLeft,TimeLimit,ReasonList,MinMemory,NumNodes,NumCPUs"
+
+alias rl="readlink -f ~/.bashrc"
+function rlf() {
+        readlink -f $1
+}

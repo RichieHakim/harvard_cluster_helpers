@@ -1,15 +1,2 @@
-module load Mambaforge/23.3.1-fasrc01
-
-# Navigation
-alias gheo="cd /n/holylabs/LABS/bsabatini_lab/Users/gheo/"
-alias scratch="cd /n/holyscratch01/bsabatini_lab/Users/gheo"
-
-# Slurm related functions
-alias sq="squeue -a -u gheo"
-alias interactive_cpu="salloc -p shared --mem=40000 -c 4 -N 1 -t 0-08:00"
-alias interactive_gpu="salloc -p kempner,kempner_requeue --mem=80000 --gres=gpu:1 -c 4 -N 1 -t 0-08:00"
-alias wc="squeue -u gheo | wc -l"
-alias rl="readlink -f /n/home01/gheo/.bashrc"
-function rlf() {
-    readlink -f $1
-}
+## CONDA
+module load ncf/1.0.0-fasrc01 miniconda3/py311_23.11.0-2-linux_x64-ncf

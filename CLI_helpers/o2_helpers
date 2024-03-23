@@ -38,6 +38,9 @@ sshare -u rh183 -U
 To check availability of resources for a node:
 watch -n 0.1 sinfo  --Format=nodehost,partition,available,memory,statelong,gres:20 -p gpu,gpu_quad,gpu_requeue
 
+Check status of partitions:
+sinfo -o "%P %A %D %F %T %c %z %a"
+
 To reserve a small interactive node (for installing packages):
 srun --pty -p interactive -t 0-00:30:00 --mem=8G /bin/bash
 
