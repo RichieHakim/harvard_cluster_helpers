@@ -360,9 +360,8 @@ if __name__ == "__main__":
         dry_run=dry_run,
     )
 
-    if args.no_daemon:
-        fn_manage_jobs()
-    else:
+    fn_manage_jobs()
+    if not no_daemon:
         timer = _RepeatTimer(interval, fn_manage_jobs)
         timer.start()
         time.sleep(duration)
