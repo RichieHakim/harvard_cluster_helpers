@@ -34,7 +34,6 @@ def print(*args, **kwargs):
 ## Properties to get from squeue
 properties = {
     'job_id': 'JobId',
-    'name': 'Name',
     'state': 'State',
     'submit_time': 'SubmitTime',
     'partition': 'Partition',
@@ -45,6 +44,7 @@ properties = {
     'time_left': 'TimeLeft',
     'priority': 'Priority',
     'node_reason': 'ReasonList',
+    'name': 'Name',
 }
 
 def parse_args():
