@@ -355,7 +355,9 @@ if __name__ == "__main__":
         username=username, 
         constraint=constraint, 
         value_max=value_max, 
-        order_jobs_by=order_by
+        order_jobs_by=order_by,
+        verbose=verbose,
+        dry_run=dry_run,
     )
 
     if args.no_daemon:
