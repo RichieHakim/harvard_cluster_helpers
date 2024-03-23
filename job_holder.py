@@ -90,7 +90,6 @@ def parse_args():
     ## Flags
     parser.add_argument(
         "--verbose", 
-        action='store_true',
         type=int,
         help="Print verbose output. Default: 0. Options: 0: No output, 1: Warnings, 2: Commands executed, 3: Debugging output.",
     )
