@@ -336,6 +336,10 @@ class _RepeatTimer(threading.Timer):
 
 
 if __name__ == "__main__":
+    ## Print everything to stdout
+    import sys
+    sys.stdout = sys.stderr
+
     args = parse_args()
     value_max, constraint, order_by, interval, duration, username, verbose, dry_run, no_daemon = (
         args.value_max, args.constraint, args.order_by, args.interval, args.duration, args.username, args.verbose, args.dry_run, args.no_daemon
