@@ -25,6 +25,7 @@ import datetime
 import re
 import itertools
 import threading
+import sys
 
 ## Properties to get from squeue
 properties = {
@@ -336,9 +337,11 @@ class _RepeatTimer(threading.Timer):
 
 
 if __name__ == "__main__":
-    ## Print everything to stdout
-    import sys
-    sys.stdout = sys.stderr
+    ## Print to terminal
+    def print(*args, **kwargs):
+        __builtins__.print(*args, **kwargs)
+        ## Write to terminal
+        sys.stdout.flush()
 
     args = parse_args()
     value_max, constraint, order_by, interval, duration, username, verbose, dry_run, no_daemon = (
