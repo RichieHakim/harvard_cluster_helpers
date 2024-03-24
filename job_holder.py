@@ -79,8 +79,8 @@ def parse_args():
     parser.add_argument(
         "-i",
         "--interval", 
-        type=int, 
-        default=5,
+        type=float, 
+        default=5.0,
         help="Interval in seconds for checking and managing jobs. Default: 5.",
     )
     ## Optional args
