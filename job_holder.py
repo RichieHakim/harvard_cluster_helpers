@@ -185,17 +185,13 @@ def get_jobs_info(username):
     jobs_info = squeue_table[1:]  ## Skip header line
     header = squeue_table[0].split(' +')  ## Get header line
 
-    starts = [v.start() for v in re.finditer('\S+', header.strip())]
-    bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
-    ji_dict = {key: [line[bounds[i_key]].strip() for line in jobs_info] for i_key, key in enumerate(properties.keys())}
-
     ## Handle case where no jobs are running
     if len(jobs_info) == 0:
         return {key: [] for key in properties}
     
     starts = [v.start() for v in re.finditer('\S+', header.strip())]
     bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
-
+    ji_dict = {key: [line[bounds[i_key]].strip() for line in jobs_info] for i_key, key in enumerate(properties.keys())}
 
     ## Convert time limit and submit time to datetime objects
     ji_dict['time_limit'] = [_parse_slurm_duration(t) for t in ji_dict['time_limit']]
