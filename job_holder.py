@@ -97,7 +97,7 @@ def parse_args():
     parser.add_argument(
         "--verbose", 
         type=int,
-        default=0,
+        default=2,
         help="Print verbose output. Default: 0. Options: 0: No output, 1: Warnings, 2: Commands executed, 3: Debugging output.",
     )
     parser.add_argument(
