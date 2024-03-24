@@ -16,6 +16,9 @@ Script proceeds as follows:
 4. Runs scontrol hold <job_id> to hold jobs
 5. Runs scontrol release <job_id> to release jobs
 6. Repeats every 5 seconds.
+
+Demo:
+python job_holder.py --value_max 16 --constraint nodes --order_by submit_time --interval 5 --verbose 2 --dry-run
 """
 
 import argparse
@@ -192,8 +195,6 @@ def get_jobs_info(username):
     starts = [v.start() for v in re.finditer('\S+', header.strip())]
     bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
     ji_dict = {key: [line[bounds[i_key]].strip() for line in jobs_info] for i_key, key in enumerate(properties.keys())}
-
-    print(ji_dict)
 
     ## Convert time limit and submit time to datetime objects
     ji_dict['time_limit'] = [_parse_slurm_duration(t) for t in ji_dict['time_limit']]
