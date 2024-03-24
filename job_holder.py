@@ -297,7 +297,7 @@ def manage_jobs(
     print(f"Value constrained calculated: {value_constrained}") if verbose > 2 else None
     
     if value_constrained >= value_max:
-        print(f"Time: {time_now}. Found {len(jobs['job_id'])} jobs. value_constrained ({value_constrained}) >= value_max ({value_max}). Executing scontrol hold on {len(jobs_sorted_pending['job_id'])} jobs." + (r"\r" if verbose <= 2 else "")) if verbose > 1 else None
+        print(f"Time: {time_now}. Found {len(jobs['job_id'])} jobs. value_constrained ({value_constrained}) >= value_max ({value_max}). Executing scontrol hold on {len(jobs_sorted_pending['job_id'])} jobs.", end=(r"\r" if verbose <= 2 else "")) if verbose > 1 else None
         # Hold any pending jobs
         for i_job, job_id in enumerate(jobs_sorted_pending['job_id']):
             if 'JobHeldUser'.lower() not in jobs_sorted_pending['node_reason'][i_job].lower():
@@ -316,7 +316,7 @@ def manage_jobs(
         print(f"cumsum of constraint: {cumsum}") if verbose > 2 else None
         ### Get number of jobs to release
         n_jobs_to_release = sum([1 for c in cumsum if c + value_constrained <= value_max])
-        print(f"Time: {time_now}. Found {len(jobs['job_id'])} jobs. value_constrained ({value_constrained}) < value_max ({value_max}). Executing scontrol release on {n_jobs_to_release} jobs." + (r"\r" if verbose <= 2 else "")) if verbose > 1 else None
+        print(f"Time: {time_now}. Found {len(jobs['job_id'])} jobs. value_constrained ({value_constrained}) < value_max ({value_max}). Executing scontrol release on {n_jobs_to_release} jobs.", end=(r"\r" if verbose <= 2 else "")) if verbose > 1 else None
         ### Release jobs
         for i_job, job_id in enumerate(jobs_sorted_pending['job_id']):
             if i_job < n_jobs_to_release:
