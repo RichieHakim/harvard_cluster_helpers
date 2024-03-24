@@ -193,6 +193,8 @@ def get_jobs_info(username):
     bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
     ji_dict = {key: [line[bounds[i_key]].strip() for line in jobs_info] for i_key, key in enumerate(properties.keys())}
 
+    print(ji_dict)
+
     ## Convert time limit and submit time to datetime objects
     ji_dict['time_limit'] = [_parse_slurm_duration(t) for t in ji_dict['time_limit']]
     ji_dict['time_left']  = [_parse_slurm_duration(t) for t in ji_dict['time_left']]
