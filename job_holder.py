@@ -183,7 +183,7 @@ def get_jobs_info(username):
     ### squeue -u <username> --Format=(properties.values())
     squeue_table = subprocess.check_output(["squeue", "-u", username, "--Format", ",".join(properties.values())]).decode().strip().split('\n')
     jobs_info = squeue_table[1:]  ## Skip header line
-    header = squeue_table[0].split(' +')  ## Get header line
+    header = squeue_table[0]  ## Get header line
 
     ## Handle case where no jobs are running
     if len(jobs_info) == 0:
