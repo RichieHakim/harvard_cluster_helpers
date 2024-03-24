@@ -141,14 +141,16 @@ def _parse_slurm_duration(t):
             minutes, seconds = (int(h) for h in hms)
             hours = 0
         else:
-            raise ValueError("Invalid time format.")
+            print(f"Invalid time format. Found t = {t}. Returning infinite time.")
+            return datetime.timedelta(days=365*1000, hours=0, minutes=0, seconds=0)
     else:
         try:
             seconds = int(time)
             hours = 0
             minutes = 0
         except ValueError:
-            raise ValueError("Invalid time format.")
+            print(f"Invalid time format. Found t = {t}. Returning infinite time.")
+            return datetime.timedelta(days=365*1000, hours=0, minutes=0, seconds=0)
         
     return datetime.timedelta(days=days, hours=hours, minutes=minutes, seconds=seconds)
 def _parse_slurm_submit_time(t):
