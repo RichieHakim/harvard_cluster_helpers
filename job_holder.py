@@ -180,14 +180,22 @@ def get_jobs_info(username):
     """
     ## Get job information
     ### squeue -u <username> --Format=(properties.values())
-    jobs_info = subprocess.check_output(["squeue", "-u", username, "--Format", ",".join(properties.values())]).decode().strip().split('\n')[1:]
-    
+    squeue_table = subprocess.check_output(["squeue", "-u", username, "--Format", ",".join(properties.values())]).decode().strip().split('\n')
+    jobs_info = squeue_table[1:]  ## Skip header line
+    header = squeue_table[0].split(' +')  ## Get header line
+
+    starts = [v.start() for v in re.finditer('\S+', header.strip())]
+    bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
+    ji_dict = {key: [line[bounds[i_key]].strip() for line in jobs_info] for i_key, key in enumerate(properties.keys())}
+
     ## Handle case where no jobs are running
     if len(jobs_info) == 0:
         return {key: [] for key in properties}
     
-    ji_dict = {key: [re.split(' +', jobs_info[i_line])[i_key] for i_line in range(len(jobs_info))] for i_key, key in enumerate(properties.keys())}
-    
+    starts = [v.start() for v in re.finditer('\S+', header.strip())]
+    bounds = [slice(v1, v2) for v1, v2 in zip(starts, starts[1:] + [None,])]
+
+
     ## Convert time limit and submit time to datetime objects
     ji_dict['time_limit'] = [_parse_slurm_duration(t) for t in ji_dict['time_limit']]
     ji_dict['time_left']  = [_parse_slurm_duration(t) for t in ji_dict['time_left']]
