@@ -74,8 +74,15 @@ def parse_args():
         type=str, 
         choices=list(properties.keys()),
         default="submit_time",
-        help="Sort pending jobs by this property. Default: 'submit_time'.",
+        help="Sort pending jobs by this property. Default: 'submit_time'. Descending order by default (big to small, later to earlier), use --order_ascending to reverse.",
         )
+    parser.add_argument(
+        "-a",
+        "--order_ascending",
+        type=bool,
+        default=False,
+        help="If True, order jobs in ascending order. Default: False (Descending order).",
+    )
     parser.add_argument(
         "-i",
         "--interval", 
@@ -221,6 +228,7 @@ def manage_jobs(
     constraint: str = 'nodes',
     value_max: int = 12, 
     order_jobs_by: str = 'submit_time',
+    order_ascending: bool = False,
     verbose: int = 0,
     dry_run: bool = False,
 ) -> None:
@@ -247,6 +255,8 @@ def manage_jobs(
         order_jobs_by (str):
             PENDING jobs will be released in order of this constraint.\n
             Options include all keys in the 'properties' dict.
+        order_ascending (bool):
+            If True, order jobs in ascending order. Default: False.
         verbose (int):
             Verbosity level.\n
                 * 0: No output.\n
@@ -276,7 +286,9 @@ def manage_jobs(
         return None
     
     ##  Sort jobs based on the order_by preference
-    idx_ordered = native_argsort(jobs[order_jobs_by])[::-1]  ## Descending order of 'order_by'
+    idx_ordered = native_argsort(jobs[order_jobs_by])[::-1]  ## Order is descending by default
+    if order_ascending:
+        idx_ordered = idx_ordered[::-1]  ## Reverse the order if order_ascending is True
     jobs_sorted = {key: [val[idx] for idx in idx_ordered] for key, val in jobs.items()}  ## Dict with each list sorted by 'order_by' from highest to lowest
     jobs_sorted_running, jobs_sorted_pending = (
         {
@@ -361,8 +373,8 @@ class _RepeatTimer(threading.Timer):
 
 if __name__ == "__main__":
     args = parse_args()
-    value_max, constraint, order_by, interval, duration, username, verbose, dry_run, no_daemon = (
-        args.value_max, args.constraint, args.order_by, args.interval, args.duration, args.username, args.verbose, args.dry_run, args.no_daemon
+    value_max, constraint, order_by, interval, duration, username, verbose, dry_run, no_daemon, order_ascending = (
+        args.value_max, args.constraint, args.order_by, args.interval, args.duration, args.username, args.verbose, args.dry_run, args.no_daemon, args.order_ascending
     )
     username = subprocess.check_output(["whoami"]).decode().strip() if username is None else username
 
@@ -375,6 +387,7 @@ if __name__ == "__main__":
         constraint=constraint, 
         value_max=value_max, 
         order_jobs_by=order_by,
+        order_ascending=order_ascending,
         verbose=verbose,
         dry_run=dry_run,
     )
