@@ -287,7 +287,7 @@ def manage_jobs(
     
     ##  Sort jobs based on the order_by preference
     idx_ordered = native_argsort(jobs[order_jobs_by])[::-1]  ## Order is descending by default
-    if order_ascending:
+    if bool(order_ascending):
         idx_ordered = idx_ordered[::-1]  ## Reverse the order if order_ascending is True
     jobs_sorted = {key: [val[idx] for idx in idx_ordered] for key, val in jobs.items()}  ## Dict with each list sorted by 'order_by' from highest to lowest
     jobs_sorted_running, jobs_sorted_pending = (
