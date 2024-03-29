@@ -5,12 +5,16 @@ alias holylabs="cd /n/holylabs/LABS/bsabatini_lab/Users/rhakim"
 alias scratch="cd /n/holyscratch01/bsabatini_lab/Users/rhakim"
 
 alias sq="squeue -a -u rhakim"
-alias interactive_cpu="salloc -p shared --mem=2G -c 2 -N 1 -t 0-02:00:00"
-alias interactive_gpu="salloc -p kempner,kempner_requeue --mem=8G --gres=gpu:1 -c 2 -N -t 0-02:00:00"
+alias interactive_cpu="salloc -p test --mem=2G -c 2 -N 1 -t 0-02:00:00 --account=kempner_bsabatini_lab"
+alias interactive_gpu="salloc -p kempner,kempner_requeue --mem=8G --gres=gpu:1 -c 2 -N 1 -t 0-02:00:00 --account=kempner_bsabatini_lab"
 alias njobs="squeue -u rhakim | wc -l"
 alias blame="sshare --account=kempner_bsabatini_lab -a"
+
 alias myjobs="watch -n 0.1 squeue -u rhakim --Format=JobId,Name,State,Partition,SubmitTime,TimeLeft,TimeLimit,ReasonList,MinMemory,NumNodes,NumCPUs"
-alias checkpart="watch -n 0.1 sinfo --Format=nodehost,partition,available,memory,statelong,gres:20, -p kempner,kempner_requeue"
+alias mysinfo="watch -n 0.1 sinfo --Format=nodehost,partition,available,memory,statelong,gres:20, -p kempner,kempner_requeue"
+alias mysqeueue="squeue --Format=JobId,Name,State,Partition,SubmitTime,TimeLeft,TimeLimit,ReasonList,MinMemory,NumNodes,NumCPUs,Username,Prioritylong,Account,Nodelist,Gres -p kempner,kempner_requeue"
+
+alias updatepartitions="squeue --user=$USER --noheader --format=%i | xargs -I {} scontrol update JobId={} Partition=kempner_requeue,kempner"
 
 alias rl="readlink -f ~/.bashrc"
 function rlf() {
