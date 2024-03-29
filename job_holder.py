@@ -18,7 +18,7 @@ Script proceeds as follows:
 6. Repeats every 5 seconds.
 
 Demo:
-python job_holder.py --value_max 16 --constraint nodes --order_by submit_time --interval 5 --verbose 2 --dry-run
+python job_holder.py --value_max 36 --constraint nodes --order_by job_id --order_ascending True --interval 30 --verbose 2
 """
 
 import argparse
@@ -73,8 +73,8 @@ def parse_args():
         "--order_by", 
         type=str, 
         choices=list(properties.keys()),
-        default="submit_time",
-        help="Sort pending jobs by this property. Default: 'submit_time'. Descending order by default (big to small, later to earlier), use --order_ascending to reverse.",
+        default="job_id",
+        help="Sort pending jobs by this property. Default: 'job_id'. Descending order by default (big to small, high to low, later to earlier), use --order_ascending to reverse.",
         )
     parser.add_argument(
         "-a",
