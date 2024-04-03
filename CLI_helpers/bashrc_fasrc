@@ -16,6 +16,8 @@ alias mysqeueue="squeue --Format=JobId,Name,State,Partition,SubmitTime,TimeLeft,
 
 alias updatepartitions="squeue --user=$USER --noheader --format=%i | xargs -I {} scontrol update JobId={} Partition=kempner_requeue,kempner"
 
+alias releaseAll="squeue --user=$USER --noheader --format=%i | xargs -r -I {} scontrol release {}"
+
 alias rl="readlink -f ~/.bashrc"
 function rlf() {
         readlink -f $1
