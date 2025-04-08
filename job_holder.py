@@ -3,7 +3,7 @@ JOB HOLDER
 RH 2024
 
 This script is used to constrain the number of jobs that a user can have running
-at one time. It is a daemon that isintended to run persistently on a small node.
+at one time. It is a daemon that is intended to run persistently on a small node.
 It is written in pure/native Python 3 and uses the subprocess module to interact
 with the SLURM.
 
