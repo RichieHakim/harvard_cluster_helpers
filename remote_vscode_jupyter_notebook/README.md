@@ -16,7 +16,8 @@ How to keep a persistent remote Jupyter kernel that can be reconnected to.
 ### Prerequisites
 
 Cluster & VS Code
-- An `sbatch` template that starts code tunnel on a compute node (Harvard/FASRC recipe).
+- An `sbatch` template file that starts code tunnel on a compute node (Harvard/FASRC recipe). Name this something like `vscode.job` and place it in somewhere like `~/scripts/vscode.job`
+
 ```bash
 #!/bin/bash
 #SBATCH --account=kempner_bsabatini_lab  # The account name for the job.
@@ -79,7 +80,7 @@ $MY_SCRATCH/code tunnel \
 1. Kick off / reconnect to your VS Code tunnel
 
 ```bash
-sbatch vscode_tunnel.job      # your existing tunnel script
+sbatch vscode.job      # your existing tunnel script
 ```
 ```bash
 tail -f slurm-XXXX.out      # copy the vscode.dev/tunnel URL
